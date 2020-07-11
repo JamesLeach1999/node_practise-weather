@@ -22,6 +22,7 @@ const forecast = require("./utils/forecast");
 // express is just a function, not an object
 // dosent take arguements, we configure it using various methds on the app itself
 const app = express();
+const port = process.env.PORT || 3000;
 // SERVING STATIC FILES
 // ----------------------------------------------------------------------------------
 // remember it auto goes to index
@@ -195,7 +196,7 @@ app.get("*", (req, res) => {
 // this starts the server, can pass a callback. its an async process
 // when you run this, it keeps running. as opposed to the other 2 which execute then the node process closes
 // this dosent as it stays up to process requests
-app.listen(3000, () => {
+app.listen(port, () => {
     // this dosent display in browser
-    console.log("server up");
+    console.log("server up" + port);
 });
