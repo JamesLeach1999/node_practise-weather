@@ -10,7 +10,7 @@ const forecast = (lat, lng, callback) => {
         } else if (response.body === 0) {
             callback(undefined, "no results found");
         } else {
-            const res = (response.body.hourly[1].temp);
+            const res = (response.body.hourly[5].temp);
             // console.log(response.body.hourly[1]);
             // get the temp and hour of each hour result
             
