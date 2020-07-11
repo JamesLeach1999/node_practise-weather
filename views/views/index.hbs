@@ -1,0 +1,137 @@
+<!-- anything in here will be served as part of the server -->
+{{!-- with hbs, instead of being static we will render it using hbs and express --}}
+{{!-- means we can remove the static file --}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body {
+    color: #333333;
+    font-family: arial;
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 0 16px;
+
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+}
+
+.main-content {
+    flex-grow: 1;
+    
+}
+
+footer {
+    color: #888888;
+    border-top: 1px solid #eeeeee;
+    margin-top: 500px;
+    padding: 16px 0;
+    clear: both;
+    margin-right: 400px;
+}
+header {
+    margin-top: 16px;
+    margin-bottom: 48px;
+}
+
+h1 {
+    font-size: 64px;
+    margin-bottom: 16px;
+}
+
+header a {
+    color: #888888;
+    margin-right: 16px;
+    text-decoration: none;
+}
+
+.portrait {
+    width: 250px;
+}
+
+
+    </style>
+{{!-- shitting mime type wont behave --}}
+    <link rel="icon" href="../../public/img/weather.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>weather</title>
+    <link rel="stylesheet" type="text/css" href="/web-server/public/css/styles.css">
+    {{!-- so if you're using query selectors and that, put this at the bottom
+    this is bevcause otherwise the script is already running before the doc is parsed, to fix just put at bottom of document --}}
+    <script src="/web-server/public/js/app.js" type="text/javascript"></script>
+</head>
+<body>
+
+    <div class="main-content">
+        {{>header}}
+        <p>use this to get weather</p>
+        {{!-- remove form action to just submit to own page --}}
+        <form>
+            <input type="text" placeholder="location">
+            <button>search</button>
+        </form>
+        <h2>{{ title }}</h2>
+        <h3>{{ name }}</h3>
+
+        <p id="message-1"></p>
+        <p id="message-2"></p>
+
+    </div>
+{{!-- fetch isnt even part of js, its a browser file so all browsers use it --}}
+    <script>
+        console.log("thats numberwang");
+        // this is just an easy api call, generates random result (string)
+        // calling fetch gets the data async, then uses a callback after (.then) where the response can be manipulated
+        // fetch("http://puzzle.mead.io/puzzle").then((response) => {
+            // turn it into json, when the response is recieved process it further
+            // use 2 callbacks just to turn response into json, data is json
+            // response.json().then((data) => {
+               // console.log(data)
+            // });
+        // });
+
+        // CHALLENGE
+// when this happens, its a full refresh so testing dosent show up, just move it above and turn it into a callback
+        const weatherForm = document.querySelector("form");
+        //gives access to input value
+        const search = document.querySelector("input");
+        // query selector only matches the first elemet with the tag, so j1st paragraph here
+
+// jsut a callback which runs for every time event occurs, e for event
+// CHALLENGE, output location and forecast to html doc
+// this is async. it only runs again and agn after the rest of thr bowser window has loaded. its added to the call stack for every button press
+        weatherForm.addEventListener("submit", (e) => {
+            const messageOne = document.querySelector("#message-1");
+            const messageTwo = document.querySelector("#message-2");
+
+            messageOne.textContent = "loading";
+            messageTwo.textContent = "..."
+
+            const location = search.value;
+// this prevents page reload everytime you click on the button
+            e.preventDefault();
+            fetch("/weather?address=" + location).then((response) => {
+                response.json().then((data) => {
+                    if(data.error) {
+                        console.log("fetch didnt work");
+                        messageOne.textContent = data.error;
+                    } else {
+                //console.log(response)
+                        console.log(data);
+// this just sets content in js elements
+                        messageOne.textContent = data.address;
+                        messageTwo.textContent = data.forecast;
+                    }
+                })
+            })
+            })
+    </script>
+
+
+    {{!-- again, just like laravel, since js dont need dollar sign --}}
+        {{>footer}}
+
+</body>
+</html>
