@@ -138,7 +138,7 @@ app.get("/weather", (req, res) => {
             // console.log(data)
                 res.send({
                     address: add,
-                    forecast: "in 5 hours it will be " + data
+                    forecast: data
                 })
             // the data parameter here overwrites the above one, so just come up with new name
             // console.log('Error', error)
