@@ -27,7 +27,6 @@ const app = express();
 // remember it auto goes to index
 // DEFINE PATHS
 const pubDirPath = path.join(__dirname, "../public");
-console.log(pubDirPath);
 const partialsPath = path.join(__dirname, "../views/partials")
 
 // express works through the application until it finds a route for the match
